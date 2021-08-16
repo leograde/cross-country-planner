@@ -7,6 +7,7 @@ const Wrapper = styled.div`
   align-items: center;
   padding: 10px 0;
   font-weight: 600;
+  cursor: move;
 `;
 
 const LeftIcon = styled.div`
@@ -21,30 +22,40 @@ const Label = styled.div`
 const RightIcon = styled.div`
   color: #7a7a7a;
   margin-left: auto;
+  cursor: pointer;
 `;
 
 interface WaypointProps {
   marker: L.Marker;
   index: number;
   onDeleteMarkerClicked: (index: number) => void;
+  onDragStart: (index: number) => void;
+  onDragEnter: (index: number) => void;
 }
 
 export function Waypoint({
   marker,
   index,
   onDeleteMarkerClicked,
+  onDragStart,
+  onDragEnter,
 }: WaypointProps) {
-  const markerLabel = marker.options.title;
-
   return (
-    <Wrapper>
-      <LeftIcon>
-        <GiHamburgerMenu size={20} />
-      </LeftIcon>
-      <Label>{markerLabel || `Waypoint ${index + 1}`}</Label>
-      <RightIcon>
-        <FaTrash size={20} onClick={() => onDeleteMarkerClicked(index)} />
-      </RightIcon>
-    </Wrapper>
+    <>
+      <Wrapper
+        draggable
+        onDragStart={() => onDragStart(index)}
+        onDragEnter={() => onDragEnter(index)}
+        onDragOver={(e) => e.preventDefault()}
+      >
+        <LeftIcon>
+          <GiHamburgerMenu size={20} />
+        </LeftIcon>
+        <Label>{marker.options.title || `Waypoint ${index + 1}`}</Label>
+        <RightIcon>
+          <FaTrash size={20} onClick={() => onDeleteMarkerClicked(index)} />
+        </RightIcon>
+      </Wrapper>
+    </>
   );
 }

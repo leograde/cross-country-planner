@@ -44,23 +44,23 @@ export function Map({
     return () => {
       leafletMap?.clearAllEventListeners();
     };
-    // Explicitly initialize and display any initial markers once
+    // only initialize the map once
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (leafletMap) {
-      const markersLayerGroup = L.layerGroup(markers);
       if (markersLayerGroupRef.current) {
         markersLayerGroupRef.current.clearLayers();
       }
+      const markersLayerGroup = L.layerGroup(markers);
       markersLayerGroup.addTo(leafletMap);
       markersLayerGroupRef.current = markersLayerGroup;
 
-      const polylinesLayerGroup = L.layerGroup(polylines);
       if (polylinesLayerGroupRef.current) {
         polylinesLayerGroupRef.current.clearLayers();
       }
+      const polylinesLayerGroup = L.layerGroup(polylines);
       polylinesLayerGroup.addTo(leafletMap);
       polylinesLayerGroupRef.current = polylinesLayerGroup;
     }

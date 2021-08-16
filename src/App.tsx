@@ -36,6 +36,16 @@ const initialGeolocation = {
 function App() {
   const [waypoints, setWaypoints] = useState<Waypoint[]>([]);
 
+  const handleSwapWaypoints = (indexA: number, indexB: number) => {
+    console.log(indexA, indexB);
+    const waypointsCopy = [...waypoints];
+    const waypointA = waypointsCopy[indexA];
+    waypointsCopy.splice(indexA, 1);
+    waypointsCopy.splice(indexB, 0, waypointA);
+
+    setWaypoints(waypointsCopy);
+  };
+
   const handleMapClicked = ({ lat, lng }: { lat: number; lng: number }) => {
     setWaypoints((prevWaypoints) => [...prevWaypoints, { lat, lng }]);
   };
@@ -65,6 +75,7 @@ function App() {
         <StyledSidebar>
           <RouteBuilder
             markers={markers}
+            onSwapWaypoints={handleSwapWaypoints}
             onDeleteMarkerClicked={handleDeleteMarker}
           />
         </StyledSidebar>
