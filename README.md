@@ -6,9 +6,8 @@ After you are satisfied with the route that was planned, you can download it in 
 
 ### How to run the application
 
-- `yarn dev` - runs the applications in development mode with Hot Module Replacement (HMR).
+- `yarn start` - runs the applications in development mode with Hot Module Replacement (HMR).
 - `yarn build` - will build the bundle so it can be deployed.
-- `yarn serve` - will preview the bundle that was created.
 
 ### Learnings
 
