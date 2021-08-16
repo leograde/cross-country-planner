@@ -1,7 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { IconContext } from "react-icons";
 import styled from "styled-components";
-import L from "leaflet";
 import { Map, RouteBuilder } from "./components";
 
 const StyledApp = styled.div`
@@ -37,7 +36,6 @@ function App() {
   const [waypoints, setWaypoints] = useState<Waypoint[]>([]);
 
   const handleSwapWaypoints = (indexA: number, indexB: number) => {
-    console.log(indexA, indexB);
     const waypointsCopy = [...waypoints];
     const waypointA = waypointsCopy[indexA];
     waypointsCopy.splice(indexA, 1);
@@ -46,35 +44,20 @@ function App() {
     setWaypoints(waypointsCopy);
   };
 
-  const handleMapClicked = ({ lat, lng }: { lat: number; lng: number }) => {
-    setWaypoints((prevWaypoints) => [...prevWaypoints, { lat, lng }]);
+  const handleMapClicked = (waypoint: Waypoint) => {
+    setWaypoints((prevWaypoints) => [...prevWaypoints, waypoint]);
   };
 
   const handleDeleteMarker = (index: number) => {
     setWaypoints(waypoints.filter((_, i) => i !== index));
   };
 
-  const coordinates = waypoints.map((waypoint) =>
-    L.latLng(waypoint.lat, waypoint.lng)
-  );
-
-  const polylines = [L.polyline(coordinates, { color: "#055ff0" })];
-
-  const markers = waypoints.map((waypoint, i) =>
-    L.marker(L.latLng(waypoint.lat, waypoint.lng), {
-      icon: L.divIcon({
-        className: "map-marker",
-        html: `<span>${i + 1}</span>`,
-      }),
-    })
-  );
-
   return (
     <IconContext.Provider value={{ style: { verticalAlign: "middle" } }}>
       <StyledApp>
         <StyledSidebar>
           <RouteBuilder
-            markers={markers}
+            waypoints={waypoints}
             onSwapWaypoints={handleSwapWaypoints}
             onDeleteMarkerClicked={handleDeleteMarker}
           />
@@ -83,8 +66,7 @@ function App() {
         <StyledContent>
           <Map
             initialGeolocation={initialGeolocation}
-            markers={markers}
-            polylines={polylines}
+            waypoints={waypoints}
             onMapClicked={handleMapClicked}
           />
         </StyledContent>

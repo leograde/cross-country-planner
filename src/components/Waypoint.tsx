@@ -1,6 +1,8 @@
+import React from "react";
 import styled from "styled-components";
 import { FaTrash } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { Waypoint as IWaypoint } from "../App";
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,7 +28,7 @@ const RightIcon = styled.div`
 `;
 
 interface WaypointProps {
-  marker: L.Marker;
+  waypoint: IWaypoint;
   index: number;
   onDeleteMarkerClicked: (index: number) => void;
   onDragStart: (index: number) => void;
@@ -34,7 +36,7 @@ interface WaypointProps {
 }
 
 export function Waypoint({
-  marker,
+  waypoint,
   index,
   onDeleteMarkerClicked,
   onDragStart,
@@ -51,7 +53,7 @@ export function Waypoint({
         <LeftIcon>
           <GiHamburgerMenu size={20} />
         </LeftIcon>
-        <Label>{marker.options.title || `Waypoint ${index + 1}`}</Label>
+        <Label>{waypoint.label || `Waypoint ${index + 1}`}</Label>
         <RightIcon>
           <FaTrash size={20} onClick={() => onDeleteMarkerClicked(index)} />
         </RightIcon>

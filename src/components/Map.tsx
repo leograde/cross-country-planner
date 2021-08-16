@@ -1,19 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import L, { LeafletMouseEvent } from "leaflet";
+import { Waypoint } from "../App";
 
 interface MapProps {
   initialGeolocation: { lat: number; lng: number };
-  markers: L.Marker[];
-  polylines: L.Polyline[];
+  waypoints: Waypoint[];
   onMapClicked: ({ lat, lng }: { lat: number; lng: number }) => void;
 }
 
-export function Map({
-  initialGeolocation,
-  markers,
-  polylines,
-  onMapClicked,
-}: MapProps) {
+export function Map({ initialGeolocation, waypoints, onMapClicked }: MapProps) {
   // We need a reference to the HTML Element in order to initialize our Map.
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [leafletMap, setLeafletMap] = useState<L.Map>();
@@ -50,6 +45,21 @@ export function Map({
 
   useEffect(() => {
     if (leafletMap) {
+      const markers = waypoints.map((waypoint, i) =>
+        L.marker(L.latLng(waypoint.lat, waypoint.lng), {
+          icon: L.divIcon({
+            className: "map-marker",
+            html: `<span>${i + 1}</span>`,
+          }),
+        })
+      );
+
+      const coordinates = waypoints.map((waypoint) =>
+        L.latLng(waypoint.lat, waypoint.lng)
+      );
+
+      const polylines = [L.polyline(coordinates, { color: "#055ff0" })];
+
       if (markersLayerGroupRef.current) {
         markersLayerGroupRef.current.clearLayers();
       }
@@ -64,7 +74,7 @@ export function Map({
       polylinesLayerGroup.addTo(leafletMap);
       polylinesLayerGroupRef.current = polylinesLayerGroup;
     }
-  }, [leafletMap, markers, polylines]);
+  }, [leafletMap, waypoints]);
 
   return <div ref={mapContainerRef} className="map-container"></div>;
 }

@@ -1,5 +1,6 @@
-import { useRef } from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
+import { Waypoint as IWaypoint } from "../App";
 import { Waypoint } from "./Waypoint";
 
 const Wrapper = styled.div`
@@ -31,13 +32,13 @@ const NoWaypointsMessage = styled.div`
 `;
 
 interface RouteBuilderProps {
-  markers: L.Marker[];
+  waypoints: IWaypoint[];
   onDeleteMarkerClicked: (index: number) => void;
   onSwapWaypoints: (indexA: number, indexB: number) => void;
 }
 
 export function RouteBuilder({
-  markers,
+  waypoints,
   onDeleteMarkerClicked,
   onSwapWaypoints,
 }: RouteBuilderProps) {
@@ -62,14 +63,14 @@ export function RouteBuilder({
     <Wrapper>
       <TitleSection>Route Builder</TitleSection>
       <WaypointsWrapper>
-        {markers.length ? (
-          markers.map((marker, index) => (
+        {waypoints.length ? (
+          waypoints.map((waypoint, index) => (
             <Waypoint
               onDeleteMarkerClicked={onDeleteMarkerClicked}
               onDragEnter={handleDragEntered}
               onDragStart={handleDragStarted}
               key={index}
-              marker={marker}
+              waypoint={waypoint}
               index={index}
             />
           ))
