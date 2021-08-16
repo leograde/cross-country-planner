@@ -4,6 +4,8 @@ The application lets you create waypoints by clicking on the map in order to cre
 
 After you are satisfied with the route that was planned, you can download it in the `.gpx` format by clicking `Download your Route`.
 
+You can check the application live on https://quizzical-bartik-c9242f.netlify.app/.
+
 ### How to run the application
 
 - `yarn start` - runs the applications in development mode with Hot Module Replacement (HMR).
